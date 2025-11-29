@@ -224,6 +224,7 @@ for(p in c(0.01,0.25,0.5)){
 # save(p0.5_lnet_0.7,file="./Data/p0.5_lnet_0.7.RData")
 
 ## Build a list for all local interactions   ####
+
 interaction_list <- list()
 idx <- 1  # Index for tracking list position
 

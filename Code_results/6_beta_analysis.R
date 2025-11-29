@@ -27,7 +27,8 @@ interaction_clean <- interaction_df %>%
   mutate(patch_id = as.character(patch_id))
 
 # Sample local networks by habitat type ####
-set.seed(42)
+
+set.seed(123)
 
 # prepare dataframe
 

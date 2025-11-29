@@ -7,10 +7,11 @@
 ###################################
 
 # Load Packages
+
 library(data.table)
-  library(readr)
-  library(dplyr)
-  library(purrr)
+library(readr)
+library(dplyr)
+library(purrr)
 
 ######## Load data ########
 
