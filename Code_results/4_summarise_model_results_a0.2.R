@@ -82,22 +82,6 @@ Land_plot
 
 ggsave("./Figures/Land_plot.png", width = 15, height = 15, units = "cm",  dpi = 600)
 
-###################### Plot host pf ################
-pf_plot<- host_df %>%
-  ggplot(aes(x = pf)) +
-  geom_density(aes(fill = as.factor(HostOrder), color = as.factor(HostOrder)), alpha = 0.3) +
-  labs(x = "Occurrence frequency in forest areas")+
-  theme_bw()+
-  theme(axis.title.y = element_blank(),
-        legend.title = element_blank(),
-        legend.position="bottom",
-        legend.background = element_rect(color="black", linetype="solid"),
-        legend.direction = "horizontal",
-        legend.box = "horizontal")
-pf_plot
-
-ggsave("./Figures/Host_of.png", width = 15, height = 12, units = "cm",  dpi = 600)
-
 #Summarizing Model Data  ####
 ## Calculate parasite extinction rate data ####
 extinction <-  model_results %>%
@@ -108,7 +92,8 @@ extinction <-  model_results %>%
   group_by(forest_cover, p_value) %>%
   reframe(Prst_richness= as.numeric(n_distinct(Name)), Ext_rate = (103 - Prst_richness)/103) %>% 
   mutate(Landscape = paste(forest_cover, p_value, sep = "_")) %>% 
-  mutate(frag_value = 1 -p_value)
+  mutate(frag_value = 1 -p_value) %>% 
+  glimpse()
 
 ## Summarise host data ####
 
@@ -129,7 +114,8 @@ p_res_h_fc <- land_pv %>%
   ungroup() %>% 
   dplyr::select(- c(core_patch_count, edge_patch_count, disturbed_patch_count)) %>% 
   dplyr::rename(host_species = Name) %>% 
-  mutate_if(is.character, as.factor)
+  mutate_if(is.character, as.factor) %>% 
+  glimpse()
 
 h_abd_df <- land_pv %>% 
   select(- c(X, Y)) %>% 
@@ -146,17 +132,19 @@ h_abd_df <- land_pv %>%
   dplyr::summarise(Host_abd = mean(Abd_type), Host_abd_sd = sd(Abd_type)) %>%
   mutate(CoefVar_host = Host_abd_sd/Host_abd) %>% 
   ungroup() %>% 
-  mutate_if(is.character, as.factor) 
+  mutate_if(is.character, as.factor) %>% 
+  glimpse()
 
-str(h_abd_df)
 
 ## Parasite and Host attributes ####
 prst_net <- prst_df %>% 
   select(Name, ZoonoticStatus, Degree, ParGroup) %>% 
-  dplyr::rename(parasite_species = Name)
+  dplyr::rename(parasite_species = Name)%>% 
+  glimpse()
 
 host_net<- host_df %>% 
-  dplyr::rename(host_species = Name)
+  dplyr::rename(host_species = Name)%>% 
+  glimpse()
 
 ## Calculate parasite relative degree ####
 
@@ -172,9 +160,9 @@ nh_df <- land_pv %>%
   mutate(Degree_rel = (Count/Degree)) %>% 
   group_by(forest_cover, p_value, Land_use, parasite_species, ZoonoticStatus, ParGroup, Degree) %>%
   dplyr::summarise(Mean_count = mean(Count), SD_rel= sd(Degree_rel), Mean_rel = mean(Degree_rel), .groups = "drop") %>% 
-  mutate(zs_dif = Mean_rel/SD_rel)
+  mutate(zs_dif = Mean_rel/SD_rel) %>% 
+  glimpse()
 
-str(nh_df)
 
 ## Gather outcomes in one dataframe ####
 
@@ -186,8 +174,8 @@ outcomes_model <- nh_df %>%
   inner_join(m_p_trait_match) %>% 
   select(-c(A_mtheta, A_nopartners, Count)) %>% 
   inner_join(extinction) %>% 
-  inner_join(betadiv.b_true)
-str(outcomes_model)
+  #inner_join(betadiv.b_true) %>% 
+  glimpse()
 
 # Analyse outcomes distribution
 outcomes_model$Mean_rel_sc <- as.numeric(scale(outcomes_model$Mean_rel))

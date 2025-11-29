@@ -10,7 +10,6 @@ pacman::p_load(tidyverse, ggplot2, ggpubr, rstatix, betareg, mgcv, lme4, margina
 
 # Load data #########################
 
-prev_HT_df<- read.csv("./Results/prev_HT_df.csv")
 outcomes_model<- read.csv("./Results/outcomes_model.csv")
 
 # Work on data set ################################### 
@@ -28,9 +27,6 @@ outcomes_model$ZoonoticStatus_dummy <- ifelse(outcomes_model$ZoonoticStatus == "
 
 land_use_dummies <- model.matrix(~ Land_use - 1, data = outcomes_model)
 outcomes_model <- cbind(outcomes_model, land_use_dummies)
-
-group_dummies <- model.matrix(~ ParGroup - 1, data = outcomes_model)
-outcomes_model <- cbind(outcomes_model, group_dummies)
 
 # Model analysis ####
 ## Fit and analyse extinction model ####
@@ -86,10 +82,10 @@ hist(outcomes_model$Host_abd) #host mean abundance
 str(outcomes_model)
 
 ##### Relative Degree ####
-m_fit <- lmer(Mean_rel_sc ~ forest_cover*frag_value +Land_useDisturbed*ZoonoticStatus_dummy+ Land_useCore + Host_abd + ParGroupBacteria + ParGroupDNA_virus+PCA_axis1 + Ext_rate_sc+ (1|parasite_species), data =outcomes_model)
+m_fit <- lmer(Mean_rel_sc ~ forest_cover*frag_value +Land_useDisturbed*ZoonoticStatus_dummy+ Land_useCore + Host_abd +PCA_axis1 + Ext_rate_sc+ (1|parasite_species), data =outcomes_model)
 
 ##### Species trait matching ####
-am_fit <- lmer(Amatch_sc ~ forest_cover*frag_value +Land_useDisturbed*ZoonoticStatus_dummy+ Land_useCore + ParGroupBacteria + ParGroupDNA_virus+ Host_abd+ PCA_axis1 + Ext_rate_sc+ (1|parasite_species), data =outcomes_model)
+am_fit <- lmer(Amatch_sc ~ forest_cover*frag_value +Land_useDisturbed*ZoonoticStatus_dummy+ Land_useCore + Host_abd+ PCA_axis1 + Ext_rate_sc+ (1|parasite_species), data =outcomes_model)
 
 ### Analyse global models ####
 DHARMa::testResiduals(m_fit)# relative degree 
@@ -108,10 +104,10 @@ df_outliers <- outcomes_model[-influential, ] # Remove influential points
 
 ### Global model without outliers ####
 ##### Relative Degree ####
-m_fit <- lmer(Mean_rel_sc ~ forest_cover*frag_value +Land_useDisturbed*ZoonoticStatus_dummy+ Land_useCore + Host_abd +ParGroupBacteria + ParGroupDNA_virus+PCA_axis1 + Ext_rate_sc+ (1|parasite_species), data =df_outliers)
+m_fit <- lmer(Mean_rel_sc ~ forest_cover*frag_value +Land_useDisturbed*ZoonoticStatus_dummy+ Land_useCore + Host_abd +PCA_axis1 + Ext_rate_sc+ (1|parasite_species), data =df_outliers)
 
 ##### Species trait matching ####
-am_fit <- lmer(Amatch_sc ~ forest_cover*frag_value +Land_useDisturbed*ZoonoticStatus_dummy+ Land_useCore + ParGroupBacteria + ParGroupDNA_virus +PCA_axis1 + Ext_rate_sc+ (1|parasite_species), data =df_outliers)
+am_fit <- lmer(Amatch_sc ~ forest_cover*frag_value +Land_useDisturbed*ZoonoticStatus_dummy+ Land_useCore  +PCA_axis1 + Ext_rate_sc+ (1|parasite_species), data =df_outliers)
 
 ##### Analyse models fit ####
 DHARMa::testResiduals(m_fit)# relative degree  
@@ -121,12 +117,14 @@ DHARMa::testResiduals(am_fit)# species trait matching
 options(na.action = "na.fail")
 
 # Relative degree 
-dredge(m_fit, m.lim = c(0,5))
-drop1(m_fit, test = "Chisq")
+summary(m_fit)
+vif(m_fit)
+drop1(m_fit)
 
 # species trait matching
-dredge(am_fit, m.lim = c(0,5))
-drop1(am_fit, test = "Chisq")
+summary(am_fit)
+vif(am_fit)
+drop1(am_fit)
 
 ### Final model configuration for each outcome ####
 #### Relative degree ####
@@ -150,8 +148,6 @@ drop1(am_fit)
 str(df_outliers)
 
 #### Relative degree ####
-m_fit <- lmer(Mean_rel_sc ~ Land_useDisturbed + Land_useCore + Host_abd+ ZoonoticStatus_dummy + Ext_rate_sc + (1|parasite_species),REML=FALSE, data =df_outliers)
-
 df_psem <- psem(
   lmer(Mean_rel_sc ~ Land_useDisturbed + Land_useCore + Host_abd+ ZoonoticStatus_dummy + Ext_rate_sc + (1|parasite_species), data =df_outliers),
   lmer(Host_abd ~ Ext_rate_sc + forest_cover + Land_useCore +Land_useDisturbed + (1|parasite_species), data = df_outliers),
@@ -172,7 +168,6 @@ write.csv(df_d_psem, "./Results/df_d_psem.csv")
 write.csv(df_d_r2, "./Results/d_r2_psem.csv")
 
 ### Species trait matching ####
-am_fit <- lmer(Amatch_sc ~ forest_cover + Land_useCore+ Land_useDisturbed +PCA_axis1 +Host_abd + (1|parasite_species),REML=FALSE, data =df_outliers)
 
 tm_psem <- psem(
   lmer(Amatch_sc ~  forest_cover + Land_useCore +Land_useDisturbed + Host_abd + PCA_axis1 + (1|parasite_species), data =df_outliers),

@@ -27,7 +27,7 @@ interaction_clean <- interaction_df %>%
   mutate(patch_id = as.character(patch_id))
 
 # Sample local networks by habitat type ####
-set.seed(123)
+set.seed(42)
 
 # prepare dataframe
 
@@ -189,6 +189,10 @@ beta_df <- rbind(beta_df, betadiv_df)
 
 }
   
+beta_df_true<- beta_df %>% 
+  filter(same_habitat == TRUE)
+
+
   # save data
   write.csv(betadiv_df, "./Results/beta_values_random.csv")
   

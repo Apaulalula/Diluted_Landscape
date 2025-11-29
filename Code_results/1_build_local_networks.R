@@ -12,7 +12,6 @@ library(ggplot2)
 library(ggpubr)
 library(rstatix)
 library(bipartite)
-library(test)
 
 # Landscape data  ####
 landscapes <- data.frame(forest_cover=double(),
@@ -209,20 +208,20 @@ for(p in c(0.01,0.25,0.5)){
       }
     }
 
-save(p0.01_lnet_0.1,file="./Data/p0.01_lnet_0.1.RData")
-save(p0.01_lnet_0.3,file="./Data/p0.01_lnet_0.3.RData")
-save(p0.01_lnet_0.5,file="./Data/p0.01_lnet_0.5.RData")
-save(p0.01_lnet_0.7,file="./Data/p0.01_lnet_0.7.RData")
-
-save(p0.25_lnet_0.1,file="./Data/p0.25_lnet_0.1.RData")
-save(p0.25_lnet_0.3,file="./Data/p0.25_lnet_0.3.RData")
-save(p0.25_lnet_0.5,file="./Data/p0.25_lnet_0.5.RData")
-save(p0.25_lnet_0.7,file="./Data/p0.25_lnet_0.7.RData")
-
-save(p0.5_lnet_0.1,file="./Data/p0.5_lnet_0.1.RData")
-save(p0.5_lnet_0.3,file="./Data/p0.5_lnet_0.3.RData")
-save(p0.5_lnet_0.5,file="./Data/p0.5_lnet_0.5.RData")
-save(p0.5_lnet_0.7,file="./Data/p0.5_lnet_0.7.RData")
+# save(p0.01_lnet_0.1,file="./Data/p0.01_lnet_0.1.RData")
+# save(p0.01_lnet_0.3,file="./Data/p0.01_lnet_0.3.RData")
+# save(p0.01_lnet_0.5,file="./Data/p0.01_lnet_0.5.RData")
+# save(p0.01_lnet_0.7,file="./Data/p0.01_lnet_0.7.RData")
+# 
+# save(p0.25_lnet_0.1,file="./Data/p0.25_lnet_0.1.RData")
+# save(p0.25_lnet_0.3,file="./Data/p0.25_lnet_0.3.RData")
+# save(p0.25_lnet_0.5,file="./Data/p0.25_lnet_0.5.RData")
+# save(p0.25_lnet_0.7,file="./Data/p0.25_lnet_0.7.RData")
+# 
+# save(p0.5_lnet_0.1,file="./Data/p0.5_lnet_0.1.RData")
+# save(p0.5_lnet_0.3,file="./Data/p0.5_lnet_0.3.RData")
+# save(p0.5_lnet_0.5,file="./Data/p0.5_lnet_0.5.RData")
+# save(p0.5_lnet_0.7,file="./Data/p0.5_lnet_0.7.RData")
 
 ## Build a list for all local interactions   ####
 interaction_list <- list()

@@ -14,10 +14,6 @@ pacman::p_load(car, igraph, plotly, data.table, betapart, vegan, reshape2, ggplo
 betadiv_df<- read.csv(betadiv_df, "./Results/beta_values_random.csv")
 
 # Work on data set ####
-str(beta_df)
-
-beta_df_true<- beta_df %>% 
-  filter(same_habitat == TRUE)
 
 hist((beta_df_true$ST))
 

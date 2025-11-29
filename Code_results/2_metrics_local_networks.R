@@ -27,18 +27,18 @@ library(ggpubr)
 
 # Load data ####
 
-load("./Data/p0.01_lnet_0.1.RData")
-load("./Data/p0.01_lnet_0.3.RData")
-load("./Data/p0.01_lnet_0.5.RData")
-load("./Data/p0.01_lnet_0.7.RData")
-load("./Data/p0.25_lnet_0.1.RData")
-load("./Data/p0.25_lnet_0.3.RData")
-load("./Data/p0.25_lnet_0.5.RData")
-load("./Data/p0.25_lnet_0.7.RData")
-load("./Data/p0.5_lnet_0.1.RData")
-load("./Data/p0.5_lnet_0.3.RData")
-load("./Data/p0.5_lnet_0.5.RData")
-load("./Data/p0.5_lnet_0.7.RData")
+# load("./Data/p0.01_lnet_0.1.RData")
+# load("./Data/p0.01_lnet_0.3.RData")
+# load("./Data/p0.01_lnet_0.5.RData")
+# load("./Data/p0.01_lnet_0.7.RData")
+# load("./Data/p0.25_lnet_0.1.RData")
+# load("./Data/p0.25_lnet_0.3.RData")
+# load("./Data/p0.25_lnet_0.5.RData")
+# load("./Data/p0.25_lnet_0.7.RData")
+# load("./Data/p0.5_lnet_0.1.RData")
+# load("./Data/p0.5_lnet_0.3.RData")
+# load("./Data/p0.5_lnet_0.5.RData")
+# load("./Data/p0.5_lnet_0.7.RData")
 
 #Topology Measures ####
 
@@ -229,7 +229,6 @@ reg_web <- mutate_all(reg_web, ~ replace(., . > 1, 1))
 # Make Density plots for each metric for local webs #### 
 Net_metric_c <- Net_metric %>% 
   gather("Metric", "value", 2:5) 
-str(Net_metric_c)
 
 meta_size <- vcount(net_graph)
 

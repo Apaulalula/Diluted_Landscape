@@ -231,7 +231,6 @@ write.csv(trait_match, "./Results/Res_traitMatch.csv")
 # filter parasite data
 prst_df1 <- prst_df %>% 
   mutate(guild = "parasites")
-str(prst_df1)
 
 m_p_trait_match <- trait_match_mean %>% 
   filter(guild == "parasites") %>%
