@@ -10,6 +10,7 @@
 # load packages
 using DelimitedFiles, CSV
 
+
 # function for finding patch neighbourhood
 function setup_neighborhood(i, j, n)
 
@@ -39,7 +40,7 @@ end
 function setup_landscapes(forestCover, pvalue)
 
 	# get generated landscape
-	landscape = readdlm(string("../../Data/landscapes/forestcover_",forestCover,"_pvalue_",pvalue,".csv"), Int)
+	landscape = readdlm(string("Data/landscapes_new/forestcover_",forestCover,"_pvalue_",pvalue,".csv"), Int)
 
 	# number of patches
 	n_patch = size(landscape, 1)
@@ -82,7 +83,7 @@ function setup_landscapes(forestCover, pvalue)
 	landscape_new = reshape(x_state_new, n_patch)
 
 	# write out new landscape
-	writedlm(string("../../Data/landscapes/forestcover_",forestCover,"_pvalue_",pvalue,"_edge.csv"), landscape_new, ',')
+	writedlm(string("Data/landscapes_new/forestcover_",forestCover,"_pvalue_",pvalue,"_edge.csv"), landscape_new, ',')
 
 	return 0 
 end

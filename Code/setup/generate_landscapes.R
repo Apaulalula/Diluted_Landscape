@@ -51,7 +51,7 @@ generate_landscapes <- function(n, f, p_value){
   if(fc!=f) {print("not converged")}
   
   # write out results
-  write.table(values(l), paste0("Data/landscapes/forestcover_",f,"_pvalue_",p_value,".csv", sep=""), row.names=FALSE, col.names=FALSE)
+  write.table(values(l), paste0("Data/landscapes_new/forestcover_",f,"_pvalue_",p_value,".csv", sep=""), row.names=FALSE, col.names=FALSE)
 }
 
 # run function
@@ -81,6 +81,7 @@ landscapes <- data.frame(forest_cover=double(),
                          p_value=double(),
                          patch_no=integer(),
                          patch_state=integer())
+
 for(f in c(0.1,0.3,0.5)){
   for(p in c(0.01,0.25,0.5)){
     l <- read.table(paste0("Data/landscapes/forestcover_",f,"_pvalue_",p,".csv"), quote="\"", comment.char="")
@@ -91,6 +92,7 @@ for(f in c(0.1,0.3,0.5)){
     landscapes <- rbind(landscapes, l)
   }
 }
+
 landscapes <- landscapes %>%
   rename(patch_state="V1") %>%
   left_join(., data.frame(patch_no=1:2500, expand.grid(Y=50:1, X=1:50)))

@@ -1,7 +1,7 @@
 function setup_landscapes(forestCover, pvalue)
 
 	# get generated landscape
-	landscape = readdlm(string("Data/landscapes/forestcover_",forestCover,"_pvalue_",pvalue,"_edge.csv"), Int)
+	landscape = readdlm(string("Data/landscapes_new/forestcover_",forestCover,"_pvalue_",pvalue,"_edge.csv"), Int)
 
 	# number of patches
 	n_patch = size(landscape, 1)

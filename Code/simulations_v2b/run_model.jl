@@ -16,9 +16,9 @@ using Distributed, Random, DelimitedFiles, DataFrames, CSV, Statistics
 
   # extinction and colonisation probabilities
   e_r = 1    # extinction - resource
-  e_c = 0.25    # extinction - consumer
+  e_c = 0.5    # extinction - consumer
   c_r = 1    # colonisation - resource
-  c_c = 0.4    # colonisation - consumer
+  c_c = 0.6    # colonisation - consumer
 
   # coevolution parameters
   phi = 0.5     # selection gradient
@@ -31,10 +31,10 @@ using Distributed, Random, DelimitedFiles, DataFrames, CSV, Statistics
   df_out = dynamics(network, forestCover, pvalue, tmax, e_r, e_c, c_r, c_c, phi, alpha, m_r, m_c, epsilon)
 
   # create output directory
-  isdir("Output_v2b") || mkdir("Output_v2b")
+  isdir("Output_v2b_new") || mkdir("Output_v2b_new")
 
   # write out simulation output
-  CSV.write(string("Output_v2b/",network,"_fc",forestCover,"_p",pvalue,"_er",e_r,"_ec",e_c,"_cr",c_r,"_cc",c_c,"_mr",m_r,"_mc",m_c,"_phi",phi,"_alpha",alpha,"_eps",epsilon,".csv"), df_out)
+  CSV.write(string("Output_v2b_new/",network,"_fc",forestCover,"_p",pvalue,"_er",e_r,"_ec",e_c,"_cr",c_r,"_cc",c_c,"_mr",m_r,"_mc",m_c,"_phi",phi,"_alpha",alpha,"_eps",epsilon,".csv"), df_out)
 
 end
 
