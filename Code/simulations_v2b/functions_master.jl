@@ -81,8 +81,8 @@ function calculate_global_abundance_and_store(x, z, n, n_sp, df_dt, g)
 	return df_dt
 end
 
-function iterate_model_through_time(x_r, x_c, z_r, z_c, x_state, n_r, n_c, pf_r, e_r, e_c, c_r, c_c, theta_r, theta_c, alpha, m_r, m_c, epsilon, phi, n, tmax, M_inc)
-#function iterate_model_through_time(x_r, x_c, z_r, z_c, x_state, n_r, n_c, pf_r, e_r, e_c, c_r, c_c, theta_r, theta_c, alpha, m_r, m_c, epsilon, phi, n, tmax, M_inc, df_dt_r, df_dt_c)
+#function iterate_model_through_time(x_r, x_c, z_r, z_c, x_state, n_r, n_c, pf_r, e_r, e_c, c_r, c_c, theta_r, theta_c, alpha, m_r, m_c, epsilon, phi, n, tmax, M_inc)
+function iterate_model_through_time(x_r, x_c, z_r, z_c, x_state, n_r, n_c, pf_r, e_r, e_c, c_r, c_c, theta_r, theta_c, alpha, m_r, m_c, epsilon, phi, n, tmax, M_inc, df_dt_r, df_dt_c)
 
   # iterate until tmax
   for g = 2:tmax
@@ -97,23 +97,23 @@ function iterate_model_through_time(x_r, x_c, z_r, z_c, x_state, n_r, n_c, pf_r,
     x_r, x_c, z_r, z_c = update_patches_sequentially(x_state, x_r, x_c, z_r, z_c, x_r_old, x_c_old, z_r_old, z_c_old, n_r, n_c, pf_r, e_r, e_c, c_r, c_c, theta_r, theta_c, alpha, m_r, m_c, epsilon, phi, n, M_inc)
 
     # calculate global abundance and store results
-    #df_dt_r = calculate_global_abundance_and_store(x_r, z_r, n, n_r, df_dt_r, g)
-    #df_dt_c = calculate_global_abundance_and_store(x_c, z_c, n, n_c, df_dt_c, g)
+    df_dt_r = calculate_global_abundance_and_store(x_r, z_r, n, n_r, df_dt_r, g)
+    df_dt_c = calculate_global_abundance_and_store(x_c, z_c, n, n_c, df_dt_c, g)
 
-    #df_dt_r[df_dt_r.t.==g,:]
+    df_dt_r[df_dt_r.t.==g,:]
     
-    #sum(isnan.(skipmissing(z_r)))
-    #sum(isnan.(skipmissing(z_c)))
+    sum(isnan.(skipmissing(z_r)))
+    sum(isnan.(skipmissing(z_c)))
 
   end # g loop
 
   # combine global abundance dataframes
-  #df_dt_r[:,"guild"] .= "resources"
-  #df_dt_c[:,"guild"] .= "consumers"
-  #df_dt = vcat(df_dt_r, df_dt_c)
+  df_dt_r[:,"guild"] .= "resources"
+  df_dt_c[:,"guild"] .= "consumers"
+  df_dt = vcat(df_dt_r, df_dt_c)
   
-  return x_r, x_c, z_r, z_c
-  #return x_r, x_c, z_r, z_c, df_dt
+  #return x_r, x_c, z_r, z_c
+  return x_r, x_c, z_r, z_c, df_dt
 end
 
 
@@ -163,16 +163,16 @@ function dynamics(network, forestCover, pvalue, tmax, e_r, e_c, c_r, c_c, phi, a
     #Random.seed!(1)
 
     # setup dataframe for storing transient results (see funtions_setup)
-    #df_dt_r = initialise_dataframes_store_results(tmax, n_r)  # resources
-    #df_dt_c = initialise_dataframes_store_results(tmax, n_c)  # consumers
-    #df_dt = DataFrame(t=Int[], species=Int[], abundance=Float32[], guild=String[])
+    df_dt_r = initialise_dataframes_store_results(tmax, n_r)  # resources
+    df_dt_c = initialise_dataframes_store_results(tmax, n_c)  # consumers
+    df_dt = DataFrame(t=Int[], species=Int[], abundance=Float32[], guild=String[])
 
     # iterate colonisation/extinction and coevolution dynamics through timesteps
-    x_r, x_c, z_r, z_c = iterate_model_through_time(x_r, x_c, z_r, z_c, x_state, n_r, n_c, pf_r, e_r, e_c, c_r, c_c, theta_r, theta_c, alpha, m_r, m_c, epsilon, phi, n, tmax, M_inc)
-    #x_r, x_c, z_r, z_c, df_dt = iterate_model_through_time(x_r, x_c, z_r, z_c, x_state, n_r, n_c, pf_r, e_r, e_c, c_r, c_c, theta_r, theta_c, alpha, m_r, m_c, epsilon, phi, n, tmax, M_inc, df_dt_r, df_dt_c)
+    #x_r, x_c, z_r, z_c = iterate_model_through_time(x_r, x_c, z_r, z_c, x_state, n_r, n_c, pf_r, e_r, e_c, c_r, c_c, theta_r, theta_c, alpha, m_r, m_c, epsilon, phi, n, tmax, M_inc)
+    x_r, x_c, z_r, z_c, df_dt = iterate_model_through_time(x_r, x_c, z_r, z_c, x_state, n_r, n_c, pf_r, e_r, e_c, c_r, c_c, theta_r, theta_c, alpha, m_r, m_c, epsilon, phi, n, tmax, M_inc, df_dt_r, df_dt_c)
     
     # write out simulation output
-    #CSV.write(string("../../Output_v2a/dt_",network,"_fc",forestCover,"_p",pvalue,"_er",e_r,"_ec",e_c,"_cr",c_r,"_cc",c_c,"_mr",m_r,"_mc",m_c,"_alpha",alpha,"_eps",epsilon,".csv"), df_dt)
+     CSV.write(string("Output_v2b_new/dt_ic_",network,"_fc",forestCover,"_p",pvalue,"_er",e_r,"_ec",e_c,"_cr",c_r,"_cc",c_c,"_mr",m_r,"_mc",m_c,"_phi",phi,"_alpha",alpha,"_eps",epsilon,".csv"), df_dt)
 
     # store final timestep results as dataframe with trait values of species in patches
     df_out = build_output_data(n_patch, n_r, n_c, z_r, z_c)

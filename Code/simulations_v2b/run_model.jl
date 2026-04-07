@@ -34,19 +34,19 @@ using Distributed, Random, DelimitedFiles, DataFrames, CSV, Statistics
   isdir("Output_v2b_new") || mkdir("Output_v2b_new")
 
   # write out simulation output
-  CSV.write(string("Output_v2b_new/",network,"_fc",forestCover,"_p",pvalue,"_er",e_r,"_ec",e_c,"_cr",c_r,"_cc",c_c,"_mr",m_r,"_mc",m_c,"_phi",phi,"_alpha",alpha,"_eps",epsilon,".csv"), df_out)
+  CSV.write(string("Output_v2b_new/IC_",network,"_fc",forestCover,"_p",pvalue,"_er",e_r,"_ec",e_c,"_cr",c_r,"_cc",c_c,"_mr",m_r,"_mc",m_c,"_phi",phi,"_alpha",alpha,"_eps",epsilon,".csv"), df_out)
 
 end
 
 # number of simulations to run in parallel
-n_sim = 4
+n_sim = 1
 
 # run simulations in parallel
 # pmap(run_parallel, [network], [forestCover], [pvalue])
 
 # eg: to run n_sim=3 different forest covers, with network="metanetwork", and pvalue=0.5, do the following:
 #pmap(run_parallel, repeat(["metanetwork"], n_sim), repeat([0.1,0.3,0.5], inner=1), repeat([0.01], outer=n_sim))
-pmap(run_parallel, repeat(["metanetwork"], n_sim), repeat([0.1,0.3,0.5, 0.7], inner=1), repeat([0.5], outer=n_sim))
+pmap(run_parallel, repeat(["metanetwork"], n_sim), repeat([0.5], inner=1), repeat([0.5], outer=n_sim))
 pmap(run_parallel, repeat(["metanetwork"], n_sim), repeat([0.1,0.3,0.5, 0.7], inner=1), repeat([0.25], outer=n_sim))
 pmap(run_parallel, repeat(["metanetwork"], n_sim), repeat([0.1,0.3,0.5, 0.7], inner=1), repeat([0.01], outer=n_sim))
 
